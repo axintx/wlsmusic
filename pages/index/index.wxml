@@ -1,0 +1,20 @@
+<!-- index.wxml -->
+<view class="indexContainer">
+  <view class="bannerContainer">
+
+    <!-- 轮播图 -->
+    <swiper 
+    class="banners" 
+    indicator-dots 
+    autoplay
+    circular 
+    snap-to-edge="True"
+    >
+      <swiper-item class="bannerItem" wx:for="{{bannerList}}" wx:key="bannerId">
+        <image src="{{item.pic}}" />
+        <view class="typeTitle" style="background:{{item.titleColor}}">{{item.typeTitle}}</view>
+      </swiper-item>
+    </swiper>
+  </view>
+
+</view>

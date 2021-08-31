@@ -1,0 +1,29 @@
+/**index.wxss**/
+.bannerContainer {
+  width: 100%;
+  height: 300rpx;
+}
+.banners {
+
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.banners image {
+  width: 100%;
+  height: 100%;
+  border-radius: 25rpx;
+
+}
+
+.banners .typeTitle {
+  font-size: 20rpx;
+  position: absolute;
+  padding: 6rpx 20rpx;
+  bottom: 0;
+  right: 0;
+  color: #fff;
+  border-bottom-right-radius: 25rpx;
+  border-top-left-radius: 25rpx;
+}
