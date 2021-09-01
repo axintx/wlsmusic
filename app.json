@@ -2,8 +2,8 @@
   "pages": [
     "pages/index/index",
     "pages/video/video",
-    "pages/personal/personal"
-
+    "pages/personal/personal",
+    "components/NavHeader/NavHeader"
   ],
   "window": {
     "backgroundTextStyle": "light",

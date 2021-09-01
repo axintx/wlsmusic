@@ -30,27 +30,21 @@
 
 /* 导航区域 */
 .navContainer {
+
+}
+
+.scroll-view_H {
   display: flex;
+  height: 160rpx;
 }
-
-.scroll-view_H{
-  /* display: flex;
-  flex-direction: row; */
-}
-
-.nav {
-  display: flex;
-  flex-direction: row;
-}
-
-
 .navItem {
+  width: 150rpx;
   display: flex;
   flex-direction: column;
   align-items: center;
-  border: 1px solid red;
-  margin: 0 25rpx;
-  padding: 0 10rpx;
+  /* border: 1px solid red; */
+  margin-right: 20rpx;
+  padding: 0 18rpx;
 }
 
 .navItem .iconfont {
@@ -67,4 +61,37 @@
 
 .navItem text {
   font-size: 24rpx;
+}
+
+/* 推荐内容区 */
+.recommendScroll {
+  display: flex;
+  height: 300rpx;
+}
+
+.scrollItem {
+  width: 200rpx;
+  margin-right: 20rpx;
+}
+
+.scrollItem image {
+  width: 200rpx;
+  height: 200rpx;
+  border-radius: 10rpx;
+}
+
+.scrollItem text {
+  font-size: 26rpx;
+  /* 单行文本溢出隐藏 省略号代替 */
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  /* 多行文本溢出隐藏 省略号代替*/
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical; /*设置对其模式*/
+  -webkit-line-clamp: 2; /*设置多行的行数*/
 }

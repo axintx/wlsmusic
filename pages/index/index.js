@@ -3,6 +3,7 @@
 Page({
   data: {
     bannerList: [], // 轮播图数据
+    recommendList: [] // 推荐歌单
   },
   // 事件处理函数
   bindViewTap() {
@@ -15,6 +16,7 @@ Page({
    */
   onLoad() {
     let page = this
+    // 获取轮播图数据
     wx.request({
       url: 'http://localhost:3000/banner', 
       data: {
@@ -28,6 +30,24 @@ Page({
         console.log(res.data)
         page.setData({
           bannerList: res.data.banners,
+        })
+      }
+    })
+
+    // 获取推荐数据
+    wx.request({
+      url: 'http://localhost:3000/personalized', 
+      data: {
+        limit: 10
+      },
+      method: 'GET',
+      header: {
+        'content-type': 'application/json' // 默认值
+      },
+      success (res) {
+        console.log(res.data.result)
+        page.setData({
+          recommendList: res.data.result,
         })
       }
     })
