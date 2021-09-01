@@ -1,20 +1,55 @@
 <!-- index.wxml -->
 <view class="indexContainer">
+  <!-- 轮播图 -->
   <view class="bannerContainer">
-
-    <!-- 轮播图 -->
-    <swiper 
-    class="banners" 
-    indicator-dots 
-    autoplay
-    circular 
-    snap-to-edge="True"
-    >
+    <swiper class="banners" indicator-dots autoplay circular snap-to-edge="True">
       <swiper-item class="bannerItem" wx:for="{{bannerList}}" wx:key="bannerId">
         <image src="{{item.pic}}" />
         <view class="typeTitle" style="background:{{item.titleColor}}">{{item.typeTitle}}</view>
       </swiper-item>
     </swiper>
   </view>
-
+  <!-- 导航区域 -->
+  <view class="navContainer">
+    <scroll-view class="scroll-view_H" scroll-x="true" bindscroll="scroll" style="width: 100%">
+      <viex class="nav">
+        <view class="navItem " bindtap="toRecommendSong">
+          <text class="iconfont icon-meirituijian"></text>
+          <text>每日推荐</text>
+        </view>
+        <view class="navItem" bindtap="toOther">
+          <text class="iconfont icon-gedan1"></text>
+          <text>私人FM</text>
+        </view>
+        <view class="navItem">
+          <text class="iconfont icon-icon-ranking"></text>
+          <text>歌单1</text>
+        </view>
+        <view class="navItem">
+          <text class="iconfont icon-icon-ranking"></text>
+          <text>排行榜</text>
+        </view>
+        <view class="navItem">
+          <text class="iconfont icon-diantai"></text>
+          <text>直播</text>
+        </view>
+        <view class="navItem">
+          <text class="iconfont icon-zhiboguankanliangbofangsheyingshexiangjixianxing"></text>
+          <text>数字专辑</text>
+        </view>
+        <view class="navItem">
+          <text class="iconfont icon-icon-ranking"></text>
+          <text>助眠解压</text>
+        </view>
+        <view class="navItem">
+          <text class="iconfont icon-diantai"></text>
+          <text>歌房</text>
+        </view>
+        <view class="navItem">
+          <text class="iconfont icon-zhiboguankanliangbofangsheyingshexiangjixianxing"></text>
+          <text>游戏专区</text>
+        </view>
+      </viex>
+    </scroll-view>
+  </view>
 </view>
