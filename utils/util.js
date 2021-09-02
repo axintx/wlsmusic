@@ -1,19 +1,23 @@
-const formatTime = date => {
-  const year = date.getFullYear()
-  const month = date.getMonth() + 1
-  const day = date.getDate()
-  const hour = date.getHours()
-  const minute = date.getMinutes()
-  const second = date.getSeconds()
+// 发送 ajax 请求
+/**
+ * 
+ */
 
-  return `${[year, month, day].map(formatNumber).join('/')} ${[hour, minute, second].map(formatNumber).join(':')}`
-}
+ import config from './config'
 
-const formatNumber = n => {
-  n = n.toString()
-  return n[1] ? n : `0${n}`
-}
-
-module.exports = {
-  formatTime
+export default (url,data={}, method='GET') => {
+  wx.request({
+    url: config.host + url, 
+    data,
+    method,
+    header: {
+      'content-type': 'application/json' // 默认值
+    },
+    success (res) {
+      console.log(res.data)
+      page.setData({
+        bannerList: res.data.banners,
+      })
+    }
+  })
 }
