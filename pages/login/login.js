@@ -14,13 +14,15 @@
  *    4）密码不正确提示返回 前端提示密码错误
  *    5）密码正确返回数据给前端 提示登录成功 带用户相关数据
  */
+import request from '../../utils/request'
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-
+    phone: '',
+    password: '',
   },
 
   /**
@@ -40,6 +42,64 @@ Page({
     })
   },
 
+  // 登录 回调
+  async login() {
+    // 1. 收集表单中的数据
+    let { phone, password } = this.data;
+
+    if (!phone) {
+      wx.showToast({
+        title: '手机号不能为空',
+        icon: 'none'
+      })
+      return;
+    }
+    // 手机号正则表达式
+    let phoneReg = /^1(3|4|5|6|7|8|9)\d{9}$/;
+    if (!phoneReg.test(phone)) {
+      wx.showToast({
+        title: '手机号格式错误',
+        icon: 'none'
+      })
+      return;
+    }
+
+    if (!password) {
+      wx.showToast({
+        title: '密码不能为空',
+        icon: 'none'
+      })
+      return;
+    }
+
+    // 后端验证
+    let result = await request('/login/cellphone', { phone, password, isLogin: true })
+    console.log('result',result)
+    if (result.code === 200) {
+      wx.showToast({
+        title: '登录成功',
+      })
+      wx.setStorageSync('userInfo', JSON.stringify(result.profile))
+      wx.reLaunch({
+        url: '/pages/personal/personal',
+      })
+    } else if (result.code === 400) {
+      wx.showToast({
+        title: '手机号错误',
+        icon: 'none'
+      })
+    } else if (result.code === 502) {
+      wx.showToast({
+        title: result.msg,
+        icon: 'none'
+      })
+    } else {
+      wx.showToast({
+        title: result.msg,
+        icon: 'none'
+      })
+    }
+  },
 
   /**
    * 生命周期函数--监听页面初次渲染完成

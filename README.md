@@ -1,1 +1,1 @@
-提交代码使用 npm run commit 
+提交代码使用 npx cz

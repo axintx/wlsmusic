@@ -1,4 +1,5 @@
 // index.js
+import request from '../../utils/request'
 
 Page({
   data: {
@@ -14,63 +15,19 @@ Page({
   /**
    * 生命周期函数 -- 监听页面加载
    */
-  onLoad() {
+  onLoad: async function(options) {
     let page = this
     // 获取轮播图数据
-    wx.request({
-      url: 'http://localhost:3000/banner', 
-      data: {
-       type: 2
-      },
-      method: 'GET',
-      header: {
-        'content-type': 'application/json' // 默认值
-      },
-      success (res) {
-        console.log(res.data)
-        page.setData({
-          bannerList: res.data.banners,
-        })
-      }
+    let bannerListData = await request('/banner', {type:2});
+    this.setData({
+      bannerList: bannerListData.banners
     })
 
     // 获取推荐数据
-    wx.request({
-      url: 'http://localhost:3000/personalized', 
-      data: {
-        limit: 10
-      },
-      method: 'GET',
-      header: {
-        'content-type': 'application/json' // 默认值
-      },
-      success (res) {
-        console.log(res.data.result)
-        page.setData({
-          recommendList: res.data.result,
-        })
-      }
-    })
-  },
-  getUserProfile(e) {
-    // 推荐使用wx.getUserProfile获取用户信息，开发者每次通过该接口获取用户个人信息均需用户确认，开发者妥善保管用户快速填写的头像昵称，避免重复弹窗
-    wx.getUserProfile({
-      desc: '展示用户信息', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
-      success: (res) => {
-        console.log(res)
-        this.setData({
-          userInfo: res.userInfo,
-          hasUserInfo: true
-        })
-      }
-    })
-  },
-  getUserInfo(e) {
-    // 不推荐使用getUserInfo获取用户信息，预计自2021年4月13日起，getUserInfo将不再弹出弹窗，并直接返回匿名的用户个人信息
-    console.log(e)
+    // let recommendListData = await request('/personalized', {limit:20});
+    let recommendListData = await request('/personalized/newsong', {limit:10});
     this.setData({
-      userInfo: e.detail.userInfo,
-      hasUserInfo: true
+      recommendList: recommendListData.result
     })
   }
 })
