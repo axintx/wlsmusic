@@ -1,13 +1,12 @@
 {
   "pages": [
-    "songPackage/pages/recommendSong/recommendSong",
+    "pages/personal/personal",
 
     "pages/index/index",
     "pages/login/login",
     "pages/video/video",
-    "pages/personal/personal",
     "components/NavHeader/NavHeader",
-
+    "songPackage/pages/recommendSong/recommendSong",
     "songPackage/pages/songDetail/songDetail"
   ],
   "window": {
@@ -25,19 +24,31 @@
     "list": [
       {
         "pagePath": "pages/index/index",
-        "text": "主页",
+        "text": "发现",
         "iconPath": "/static/images/tabs/tab-home.png",
         "selectedIconPath": "/static/images/tabs/tab-home-current.png"
       },
       {
         "pagePath": "pages/video/video",
-        "text": "视频",
+        "text": "博客",
         "iconPath": "/static/images/tabs/select.png",
         "selectedIconPath": "/static/images/tabs/selected.png"
       },
       {
         "pagePath": "pages/personal/personal",
-        "text": "个人中心",
+        "text": "我的",
+        "iconPath": "/static/images/tabs/tab-my.png",
+        "selectedIconPath": "/static/images/tabs/tab-my-current.png"
+      },
+      {
+        "pagePath": "pages/video/video",
+        "text": "关注",
+        "iconPath": "/static/images/tabs/select.png",
+        "selectedIconPath": "/static/images/tabs/selected.png"
+      },
+      {
+        "pagePath": "pages/personal/personal",
+        "text": "云村",
         "iconPath": "/static/images/tabs/tab-my.png",
         "selectedIconPath": "/static/images/tabs/tab-my-current.png"
       }

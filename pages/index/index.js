@@ -30,6 +30,14 @@ Page({
       recommendList: recommendListData.result
     })
 
+    // 获取用户信息
+    let userInfo = await request('/login/status')
+    console.log(userInfo);
+
+    let userInfo1 = await request('/user/detail', {uid: 1676586883})
+    console.log(userInfo1);
+    
+
     // 排行榜区域
     let index = 0
     let resultArr = [];
