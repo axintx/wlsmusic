@@ -12,8 +12,8 @@ export default (url, data = {}, method = 'GET') => {
       data,
       method,
       header: {
-        'content-type': 'application/json', // 默认值
-        // cookie: wx.getStorageSync('cookies')?wx.getStorageSync('cokkies').find(item => item.indexOf('MUSIC_U') !== -1):''
+        // 'content-type': 'application/json', // 默认值
+        cookie: wx.getStorageSync('cookies')?wx.getStorageSync('cookies').find(item => item.indexOf('MUSIC_U') !== -1):''
       },
       success: (res) => {
         // console.log('1',res)
