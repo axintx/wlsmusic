@@ -77,7 +77,7 @@ page {
   height: 40rpx;
   line-height: 40rpx;
   font-size: 24rpx;
-  max-width: 500rpx;
+  max-width: 400rpx;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -91,7 +91,7 @@ page {
 
 .scrollItem .iconfont {
   position: absolute;
-  right: 0;
+  right: 20rpx;
   width: 80rpx;
   height: 80rpx;
   line-height: 80rpx;
