@@ -1,18 +1,43 @@
 // pages/personal.js
+import request from '../../utils/request'
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-
+    userInfo: {}, // 用户信息
+    recentPlayList: [], // 用户播放记录
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    // 读取用户信息
+    let userInfo = wx.getStorageSync('userInfo');
+    if (userInfo) {
+      this.setData({
+        userInfo: JSON.parse(userInfo)
+      })
 
+      // 获取用户播放记录的函数
+      this.getUserRecentPlayList(this.data.userInfo.userId)
+    }
+  },
+
+  // 获取用户播放记录
+  async getUserRecentPlayList(userId) {
+    let recentPlayListData = await request('/user/record', { uid: userId, type: 0});
+    let index = 0;
+    let recentPlayList = recentPlayListData.allData.splice(0, 10).map(item => {
+      item.id = index++;
+      return item;
+    })
+    console.log(recentPlayList);
+    this.setData({
+      recentPlayList
+    })
   },
 
   /**
