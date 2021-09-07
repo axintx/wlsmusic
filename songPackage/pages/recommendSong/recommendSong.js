@@ -10,7 +10,8 @@ Page({
     day: '', // 天
     month: '', // 月
     recommendList: [], // 推荐列表数据,
-    totalNum: 0
+    totalNum: 0,
+    index: 0 // 点击音乐的下标
   },
 
   /**
@@ -19,6 +20,7 @@ Page({
   onLoad: function (options) {
     // 判断用户是否登录
     let userInfo = wx.getStorageSync('userInfo');
+    console.log('userInfo',userInfo);
     if(!userInfo) {
       wx.showToast({
         title: '请先登录',
@@ -53,6 +55,20 @@ Page({
     this.setData({
       recommendList: recommendListData.recommend,
       totalNum: recommendListData.recommend.length
+    })
+  },
+
+  // 跳转到 songDetail 页面
+  toSongDetail(event) {
+    console.log(event);
+    let {song, index} = event.currentTarget.dataset;
+    this.setData({
+      index
+    })
+    // 路由跳转传参: query参数
+    wx.navigateTo({
+      // 不能直接将song对象作为参数传递，长度过长，会被截取掉
+      url: '/songPackage/pages/songDetail/songDetail?musicId=' + song.id
     })
   },
 

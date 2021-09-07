@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "提交代码使用 npm run commit",
   "main": "app.js",
-  "dependencies": {},
+  "dependencies": {
+    "moment": "^2.29.1"
+  },
   "devDependencies": {
     "@commitlint/cli": "^13.1.0",
     "@commitlint/config-conventional": "^13.1.0",
