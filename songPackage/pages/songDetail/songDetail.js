@@ -8,9 +8,14 @@ Page({
    * 页面的初始数据
    */
   data: {
+    isPlay: false, // 是否播放
     musicId: '', // 音乐id
     song: {}, //歌曲详情对象
-    durationTime: '00:00' // 总时长 
+    musicLink: '', // 音乐的链接
+    
+    currentTime: '00:00', // 实时时间
+    durationTime: '00:00', // 总时长 
+    currentWidth: 0 // 实时进度条的宽度
   },
 
   /**
@@ -25,6 +30,11 @@ Page({
     })
     // 获取音乐详情
     this.getMusicInfo(musicId)
+    // this.getMusicInfo(31253654)
+
+    // // 创建控制音乐播放的实例
+    this.backgroundAudioManager = wx.getBackgroundAudioManager();
+
 
   },
 
@@ -32,6 +42,7 @@ Page({
   async getMusicInfo(musicId) {
     let songData = await request('/song/detail', { ids: musicId });
     let durationTime = moment(songData.songs[0].dt).format('mm:ss');
+    console.log(songData)
     this.setData({
       song: songData.songs[0],
       durationTime
@@ -41,7 +52,25 @@ Page({
     wx.setNavigationBarTitle({
       title: this.data.song.name,
     })
+    this.musicControl(musicId)
+  },
 
+  // 点击播放 / 暂停的回调
+  handleMusicPlay() {
+    let { musicId, musicLink } = this.data;
+  },
+
+  // 控制音乐播放 // 暂停的功能函数
+  async musicControl(musicId) {
+    // 获取音乐 url 
+    let musicLinkData= await request('/song/url', {id: musicId});
+    console.log('musicLinkData',musicLinkData);
+    let musicLink = musicLinkData.data[0].url;
+    this.setData({
+      musicLink
+    })
+    this.backgroundAudioManager.src = musicLink;
+    this.backgroundAudioManager.title = this.data.song.name;
   },
 
   /**
