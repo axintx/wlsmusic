@@ -12,7 +12,6 @@ Page({
     musicId: '', // 音乐id
     song: {}, //歌曲详情对象
     musicLink: '', // 音乐的链接
-    
     currentTime: '00:00', // 实时时间
     durationTime: '00:00', // 总时长 
     currentWidth: 0 // 实时进度条的宽度
@@ -34,9 +33,40 @@ Page({
 
     // // 创建控制音乐播放的实例
     this.backgroundAudioManager = wx.getBackgroundAudioManager();
+    // 监听音乐播放
+    this.backgroundAudioManager.onPlay(() => {
+      this.changePlayState(true);
+    });
+    // 监听音乐暂停
+    this.backgroundAudioManager.onPause(() => {
+      this.changePlayState(false);
+    });
+    // 监听音乐停止
+    this.backgroundAudioManager.onStop(() => {
+      this.changePlayState(false);
+    });
 
+    // 监听音乐实时播放的进度
+    this.backgroundAudioManager.onTimeUpdate(() => {
+      // 格式化实时播放时间
+      let currentTime = moment(this.backgroundAudioManager.currentTime *1000).format('mm:ss')
+      let currentWidth = this.backgroundAudioManager.currentTime/this.backgroundAudioManager.duration*450;
+      this.setData({
+        currentTime,
+        currentWidth
+      })
+    })
 
   },
+
+  // 修改播放状态的功能函数
+  changePlayState(isPlay) {
+    this.setData({
+      isPlay
+    })
+  },
+
+
 
   // 获取音乐详情函数
   async getMusicInfo(musicId) {
@@ -52,25 +82,33 @@ Page({
     wx.setNavigationBarTitle({
       title: this.data.song.name,
     })
-    this.musicControl(musicId)
+    // this.musicControl(musicId)
   },
 
   // 点击播放 / 暂停的回调
   handleMusicPlay() {
+    let isPlay = !this.data.isPlay;
     let { musicId, musicLink } = this.data;
+    this.musicControl(isPlay, musicId, musicLink);
   },
 
   // 控制音乐播放 // 暂停的功能函数
-  async musicControl(musicId) {
-    // 获取音乐 url 
-    let musicLinkData= await request('/song/url', {id: musicId});
-    console.log('musicLinkData',musicLinkData);
-    let musicLink = musicLinkData.data[0].url;
-    this.setData({
-      musicLink
-    })
-    this.backgroundAudioManager.src = musicLink;
-    this.backgroundAudioManager.title = this.data.song.name;
+  async musicControl(isPlay, musicId, musicLink) {
+    if (isPlay) { // 音乐播放
+      // 获取音乐 url 
+      let musicLinkData = await request('/song/url', { id: musicId });
+      console.log('musicLinkData', musicLinkData);
+      musicLink = musicLinkData.data[0].url;
+      this.setData({
+        musicLink
+      })
+      this.backgroundAudioManager.src = musicLink;
+      this.backgroundAudioManager.title = this.data.song.name;
+    } else { // 暂停音乐
+      this.backgroundAudioManager.pause();
+    }
+
+
   },
 
   /**
