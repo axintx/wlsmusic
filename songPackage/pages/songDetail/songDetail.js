@@ -1,4 +1,4 @@
-
+import PubSub from 'pubsub-js'
 import moment from 'moment'
 
 import request from '../../../utils/request'
@@ -46,11 +46,22 @@ Page({
       this.changePlayState(false);
     });
 
+    // 监听音乐自然结束
+
+    this.backgroundAudioManager.onEnded(() => {
+      // 自动切换至下一首音乐 并且自动播放
+      PubSub.publish('switchType', 'next')
+      // 将 实时进度条的长度还原成 0 时间为 0
+      this.setData({
+        currentWidth: 0,
+        currentTime: '00:00'
+      })
+    })
     // 监听音乐实时播放的进度
     this.backgroundAudioManager.onTimeUpdate(() => {
       // 格式化实时播放时间
-      let currentTime = moment(this.backgroundAudioManager.currentTime *1000).format('mm:ss')
-      let currentWidth = this.backgroundAudioManager.currentTime/this.backgroundAudioManager.duration*450;
+      let currentTime = moment(this.backgroundAudioManager.currentTime * 1000).format('mm:ss')
+      let currentWidth = this.backgroundAudioManager.currentTime / this.backgroundAudioManager.duration * 450;
       this.setData({
         currentTime,
         currentWidth
@@ -65,8 +76,6 @@ Page({
       isPlay
     })
   },
-
-
 
   // 获取音乐详情函数
   async getMusicInfo(musicId) {
@@ -95,19 +104,44 @@ Page({
   // 控制音乐播放 // 暂停的功能函数
   async musicControl(isPlay, musicId, musicLink) {
     if (isPlay) { // 音乐播放
-      // 获取音乐 url 
-      let musicLinkData = await request('/song/url', { id: musicId });
-      console.log('musicLinkData', musicLinkData);
-      musicLink = musicLinkData.data[0].url;
-      this.setData({
-        musicLink
-      })
+      if (!musicLink) {
+        // 获取音乐 url 
+        let musicLinkData = await request('/song/url', { id: musicId });
+        // console.log('musicLinkData', musicLinkData);
+        musicLink = musicLinkData.data[0].url;
+        this.setData({
+          musicLink
+        })
+      }
+
       this.backgroundAudioManager.src = musicLink;
       this.backgroundAudioManager.title = this.data.song.name;
+
     } else { // 暂停音乐
       this.backgroundAudioManager.pause();
     }
+  },
 
+  // 点击切歌的回调
+  handleSwitch(event) {
+    // 获取切歌的类型
+    // console.log("event",event);
+    let type = event.currentTarget.id;
+    // 关闭当前音乐
+    this.backgroundAudioManager.stop();
+
+    // 发布消息数据给recommendsong 页面
+    PubSub.publish('switchType', type)
+
+    // 订阅来自 recommendSong 页面发布的 musicId 消息
+    PubSub.subscribe('musicId', (msg, musicId) => {
+      //  获取音乐详细信息
+      this.getMusicInfo(musicId);
+      // 自动播放当前的音乐
+      this.musicControl(true, musicId);
+      // 取消订阅
+      PubSub.unsubscribe('musicId');
+    })
 
   },
 

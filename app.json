@@ -1,6 +1,6 @@
 {
+
   "pages": [
-    "songPackage/pages/recommendSong/recommendSong",
     "pages/personal/personal",
     "pages/index/index",
     "pages/login/login",

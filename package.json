@@ -4,7 +4,8 @@
   "description": "提交代码使用 npm run commit",
   "main": "app.js",
   "dependencies": {
-    "moment": "^2.29.1"
+    "moment": "^2.29.1",
+    "pubsub-js": "^1.9.3"
   },
   "devDependencies": {
     "@commitlint/cli": "^13.1.0",

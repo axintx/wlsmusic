@@ -1,3 +1,4 @@
+import PubSub from 'pubsub-js'
 import request from "../../../utils/request"
 
 // songPackage/pages/recommendSong/recommendSong.js
@@ -20,8 +21,8 @@ Page({
   onLoad: function (options) {
     // 判断用户是否登录
     let userInfo = wx.getStorageSync('userInfo');
-    console.log('userInfo',userInfo);
-    if(!userInfo) {
+    console.log('userInfo', userInfo);
+    if (!userInfo) {
       wx.showToast({
         title: '请先登录',
         icon: 'none',
@@ -29,7 +30,7 @@ Page({
           // 跳转到登录页面 
           // 关闭所有页面，打开到应用内的某个页面
           wx.reLaunch({
-            url:'/pages/login/login'
+            url: '/pages/login/login'
           })
         }
       })
@@ -39,11 +40,35 @@ Page({
     this.setData({
       day: new Date().getDate(),
       month: new Date().getMonth() + 1
-      
+
     })
 
     // 获取每日推荐数据
     this.getRecommendList();
+
+    // 订阅来自 songDetail 页面发布的消息
+    PubSub.subscribe('switchType', (msg, type) => {
+      let { recommendList, index } = this.data;
+      if (type === 'pre') {
+        // 上一首 如果到第一首歌曲了， 下标切换到 最后一个首歌
+        (index === 0) && (index = recommendList.length);
+        index -= 1;
+      } else {
+        // 下一首 如果 到 最后一首歌了，下标切换到 第一首个歌
+        (index === recommendList.length -1) && (index = -1);
+        index += 1;
+      }
+
+      // 更新下标
+      this.setData({
+        index
+      })
+
+      let musicId = recommendList[index].id;
+      // 将 musicId 回传给 songDetail 页面
+      PubSub.publish('musicId', musicId)
+
+    });
   },
 
   // 获取用户推荐数据
@@ -61,7 +86,7 @@ Page({
   // 跳转到 songDetail 页面
   toSongDetail(event) {
     console.log(event);
-    let {song, index} = event.currentTarget.dataset;
+    let { song, index } = event.currentTarget.dataset;
     this.setData({
       index
     })
