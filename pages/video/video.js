@@ -6,9 +6,10 @@ Page({
   /**
    * 页面的初始数据
    */
-  data: { 
+  data: {
     videoGroupList: [], // 导航标签数据
     navId: '', // 导航的标识
+    videoList: [], // 视频列表数据
   },
 
   /**
@@ -24,6 +25,22 @@ Page({
     this.setData({
       videoGroupList: videoGroupListData.data.slice(0, 14),
       navId: videoGroupListData.data[0].id
+    })
+
+    // 获取视频列表数据
+    this.getVideoList(this.data.navId)
+
+  },
+
+  // 获取视频列表数据
+  async getVideoList(navId) {
+    if (!navId) {
+      return;
+    }
+    let videodListData = await request('/video/group', { id: navId });
+    let videoList = videodListData.datas;
+    this.setData({
+      videoList,
     })
   },
 
